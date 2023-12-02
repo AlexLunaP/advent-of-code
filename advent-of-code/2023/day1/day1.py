@@ -1,33 +1,46 @@
-
-# Using readlines()
 file = open('input.txt', 'r')
 lines = file.readlines()
 
-
-first_digit = ""
-last_digit = ""
 total_sum = 0
-test = "zeroowowowo"
 
-digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+spelled_digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-# Strips the newline character
 for line in lines:
     first_digit = ""
     last_digit = ""
+    index_digit = {}
+    
+    for digit in spelled_digits:
+        first_index = line.find(digit)
+        last_index = line.rfind(digit)
 
-    """ for digit in digits:
-        index = line.find(digit) """
+        if first_index != -1:
+            index_digit[first_index] = spelled_digits.index(digit)
+
+        if last_index != -1:
+            index_digit[last_index] = spelled_digits.index(digit)
+
+    character_index = 0
 
     for character in line:
-        if character.isdigit() and first_digit == "": 
-            first_digit = character
-            last_digit = character
-
-        elif character.isdigit() and first_digit != "": 
-            last_digit = character
+        if character.isdigit():
+            index_digit[character_index] = character
+        character_index += 1
     
-    total_sum += int(str(first_digit) + str(last_digit))
+    # Search the first and last index
+    min_index = float('inf')
+    max_index = float('-inf')
+    first_number = ""
+    last_number = ""
 
+    for character_index, digit in index_digit.items():
+            if character_index < min_index:
+                min_index = character_index
+                first_number = digit
+            if character_index > max_index:
+                max_index = character_index
+                last_number = digit
+
+    total_sum += int(str(first_number) + str(last_number))
 
 print(total_sum)
